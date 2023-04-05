@@ -22,20 +22,17 @@ classdef Sdf
     methods        
 %---------------------------------------------------- Signed Distance Class     
         function obj = Sdf(fnc,varargin)
-            obj.sdf      = @(x) [fnc(x),fnc(x)];
-            % obj.cmap     = cmap_viridis;
-            % obj.color    = [32, 129, 191]/255;
-            % obj.Quality  = 75;
-            % obj.eps      = 1e-5;
-            % obj.Velocity = zeros(6,1);
-            
+            obj.sdf      = @(x) [fnc(x),fnc(x)];          
             obj.options = sdfoptions;
 
             for ii = 1:2:length(varargin)
-                obj.options.(varargin{ii}) = varargin{ii+1};
+                if isprop(obj,varargin{ii})
+                    obj.(varargin{ii}) = varargin{ii+1};
+                else
+                    obj.options.(varargin{ii}) = varargin{ii+1};
+                end
             end           
 
-            %obj.BdBox = options.BdBox;
         end
 %-------------------------------------------------------------------- union
         function r = plus(obj1,obj2)
@@ -46,44 +43,43 @@ classdef Sdf
                 obj2 = obj1;
             end
             
-            B1 = box2node(obj1.options.BdBox); 
-            B2 = box2node(obj2.options.BdBox);
+            B1 = box2node(obj1.BdBox); 
+            B2 = box2node(obj2.BdBox);
             
             if norm(B1) == Inf
-                r.options.BdBox = B2;
+                r.BdBox = B2;
             elseif norm(B2) == Inf
-                r.options.BdBox = B1;
+                r.BdBox = B1;
             else
-                B = [box2node(obj1.options.BdBox); 
-                     box2node(obj2.options.BdBox)];
+                B = [box2node(obj1.BdBox); 
+                     box2node(obj2.BdBox)];
                  
-                r.options.BdBox = boxhull(B);
+                r.BdBox = boxhull(B);
             end
-            
-            r.options.BdBox = (r.options.BdBox(:)).';
+            r.BdBox = (r.BdBox(:)).';
         end
 %--------------------------------------------------------------- difference        
         function r = minus(obj1,varargin)
             obj2 = varargin{1};
             fnc = @(x) dDiff(obj1.sdf(x),obj2.sdf(x));
             r = Sdf(fnc);
-            r.options.BdBox = obj1.options.BdBox;
+            r.BdBox = obj1.BdBox;
         end
 %---------------------------------------------------------------- intersect        
         function r = mrdivide(obj1,obj2)
             fnc = @(x) dIntersect(obj1.sdf(x),obj2.sdf(x));
             r = Sdf(fnc);
-            B1 = box2node(obj1.options.BdBox); 
-            B2 = box2node(obj2.options.BdBox);
+            B1 = box2node(obj1.BdBox); 
+            B2 = box2node(obj2.BdBox);
             
             if norm(B1) == Inf
-                r.options.BdBox = B2;
+                r.BdBox = B2;
             elseif norm(B2) == Inf
-                r.options.BdBox = B1;
+                r.BdBox = B1;
             else
-                B = [box2node(obj1.options.BdBox); 
-                     box2node(obj2.options.BdBox)];
-                r.options.BdBox = boxhull(B);
+                B = [box2node(obj1.BdBox); 
+                     box2node(obj2.BdBox)];
+                r.BdBox = boxhull(B);
             end
         end
 %---------------------------------------------------------------- intersect                
@@ -94,7 +90,7 @@ classdef Sdf
                 N = varargin{1};
             end
                 
-            B = obj.options.BdBox(:);
+            B = obj.BdBox(:);
             
             if numel(B) == 4
                 if dX(2) == 0
@@ -117,13 +113,13 @@ classdef Sdf
             end
             
             r = Sdf( @(x) dIntersect(obj.sdf(pRepeat(x,dX)), Si.sdf(x)));
-            r.options.BdBox = A;
+            r.BdBox = A;
 
         end
 %----------------------------------------------------------- rotate X <-> Y              
         function r = transpose(obj1)
             
-            B = obj1.options.BdBox;
+            B = obj1.BdBox;
             C = obj1.options.Center; 
             if numel(B) == 4
                 fnc = @(x) obj1.sdf([x(:,2),x(:,1)]);
@@ -140,15 +136,15 @@ classdef Sdf
 %----------------------------------------------------------- rotate X <-> Y          
         function r = translate(obj1,move)
             
-           B = obj1.options.BdBox; 
+           B = obj1.BdBox; 
            y = @(x) x - repmat(move(:)',size(x,1),1);
            r = Sdf(@(x) obj1.sdf(y(x)));
            
            if numel(move) == 2
-               r.options.BdBox = [B(1)+move(1), B(2)+move(1),               ...
+               r.BdBox = [B(1)+move(1), B(2)+move(1),               ...
                                   B(3)+move(2), B(4)+move(2)];    
            else
-               r.options.BdBox = [B(1)+move(1), B(2)+move(1),               ...
+               r.BdBox = [B(1)+move(1), B(2)+move(1),               ...
                                   B(3)+move(2), B(4)+move(2),               ...
                                   B(5)+move(3), B(6)+move(3)];     
            end
@@ -178,8 +174,8 @@ classdef Sdf
             end
             
             fnc = @(x) obj1.sdf((R*x.').');
-            r = Sdf(fnc);
-            BB = box2node(obj1.BdBox);
+            r   = Sdf(fnc);
+            BB  = box2node(obj1.BdBox);
             
             r.BdBox = boxhull((R.'*BB.').').';
         end        
@@ -325,8 +321,8 @@ if nargin < 2
     end
 end
 
-x = linspace(Sdf.options.BdBox(1),Sdf.options.BdBox(2),Sdf.options.Quality);
-y = linspace(Sdf.options.BdBox(3),Sdf.options.BdBox(4),Sdf.options.Quality);
+x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Sdf.options.Quality);
+y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Sdf.options.Quality);
 [X,Y] = meshgrid(x,y);
 Nds = [X(:), Y(:)];
 end
@@ -404,46 +400,45 @@ end
 end
 %--------------------------------------------------------------------- show
 function show(Sdf,varargin)
-%     
 
-    for ii = 1:2:length(varargin)
-        Sdf.(varargin{ii}) = varargin{ii+1};
-    end
-    
-    Q = Sdf.options.Quality;
-    x = linspace(Sdf.options.BdBox(1),Sdf.options.BdBox(2), Q);
-    y = linspace(Sdf.options.BdBox(3),Sdf.options.BdBox(4), Q);
-    
-    if numel(Sdf.options.BdBox) < 6
-        [X,Y] = meshgrid(x,y);
+for ii = 1:2:length(varargin)
+    Sdf.(varargin{ii}) = varargin{ii+1};
+end
 
-        D = Sdf.eval([X(:),Y(:)]);
-        D = abs(D(:,end)).^(0.75).*sign(D(:,end));
+Q = Sdf.options.Quality;
+x = linspace(Sdf.BdBox(1),Sdf.BdBox(2), Q);
+y = linspace(Sdf.BdBox(3),Sdf.BdBox(4), Q);
 
-        figure(101);
-        cplane(X,Y,reshape(D,[Q, Q]) - 1e-6);
-        axis equal; hold on;
+if numel(Sdf.BdBox) < 6
+    [X,Y] = meshgrid(x,y);
 
-        contour3(X,Y,                                                       ...
-            reshape(D,[Q, Q]),                                              ...
-            [0 0],'linewidth', 2.5, 'Color', 'w');
+    D = Sdf.eval([X(:),Y(:)]);
+    D = abs(D(:,end)).^(0.75).*sign(D(:,end));
 
-        view(0,90);
-    else
-        z = linspace(Sdf.options.BdBox(5),Sdf.options.BdBox(6),Q);
-        [X,Y,Z] = meshgrid(x,y,z);
+    figure(101);
+    cplane(X,Y,reshape(D,[Q, Q]) - 1e-6);
+    axis equal; hold on;
 
-        D = Sdf.eval([X(:),Y(:),Z(:)]);
-        D = D(:,end);
-        D(D>0) = NaN;
-        figure(101);
-        C = reshape(D,[Q, Q, Q]);
-        scatter3(X(:),Y(:),Z(:),85,C(:),'Marker','.');
-        axis equal; hold on;
-    end
+    contour3(X,Y,                                                       ...
+        reshape(D,[Q, Q]),                                              ...
+        [0 0],'linewidth', 2.5, 'Color', 'w');
 
-    axis(Sdf.options.BdBox);
-    colormap(Sdf.options.ColorMap);
+    view(0,90);
+else
+    z = linspace(Sdf.BdBox(5),Sdf.BdBox(6),Q);
+    [X,Y,Z] = meshgrid(x,y,z);
+
+    D = Sdf.eval([X(:),Y(:),Z(:)]);
+    D = D(:,end);
+    D(D>0) = NaN;
+    figure(101);
+    C = reshape(D,[Q, Q, Q]);
+    scatter3(X(:),Y(:),Z(:),85,C(:),'Marker','.');
+    axis equal; hold on;
+end
+
+axis(Sdf.BdBox);
+colormap(Sdf.options.ColorMap);
 
 end
 %--------------------------------------------------------------------- show
@@ -457,11 +452,13 @@ end
 function [h, I] = showcontour(Sdf,varargin)
     
     for ii = 1:2:length(varargin)
-        Sdf.(varargin{ii}) = varargin{ii+1};
+        Sdf.options.(varargin{ii}) = varargin{ii+1};
     end
     
-    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Sdf.Quality);
-    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Sdf.Quality);
+    Q = Sfd.options.Quality;
+
+    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
+    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
     
     if numel(Sdf.BdBox) < 6
 
@@ -473,16 +470,16 @@ function [h, I] = showcontour(Sdf,varargin)
         D(D>1e-6) = NaN;
         
         figure(101);
-        h = cplane(X,Y,reshape(D,[Sdf.Quality Sdf.Quality])-1e-6);
+        h = cplane(X,Y,reshape(D,[Q Q])-1e-6);
         axis equal; hold on;
         I = frame2im(getframe(gca));
         
-        contour3(X,Y,reshape(D,[Sdf.Quality Sdf.Quality]),...
+        contour3(X,Y,reshape(D,[Q Q]),...
             [0 0]);
         
         axis(Sdf.BdBox*1.01);
 
-        colormap([Sdf.color; Sdf.color]);
+        colormap([Sdf.options.Color; Sdf.options.Color]);
         view(0,90);
         drawnow;
         I = frame2im(getframe(gca));
