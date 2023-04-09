@@ -26,13 +26,9 @@ classdef Sdf
             obj.options = sdfoptions;
 
             for ii = 1:2:length(varargin)
-                if isprop(obj,varargin{ii})
-                    obj.(varargin{ii}) = varargin{ii+1};
-                else
-                    obj.options.(varargin{ii}) = varargin{ii+1};
-                end
-            end           
-
+                obj.(varargin{ii}) = varargin{ii+1};
+            end  
+            %obj = vararginParser(obj,varargin{:});
         end
 %-------------------------------------------------------------------- union
         function r = plus(obj1,obj2)
@@ -357,12 +353,15 @@ Z = atan2(N(:,2).*sign(-d(:,end)),N(:,1).*sign(-d(:,end)));
     
 end
 %------------------------------------------------- evalution of tangent SDF
-function C = centerofmass(Sdf)
-    
-Q = Sdf.options.PlotQuality;
+function C = centerofmass(Sdf,varargin)
+
+Sdf = vararginParser(Sdf,varargin{:});    
+
+Q = Sdf.options.Quality;
 C = zeros(numel(Sdf.BdBox)/2,1);
 x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
 y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
+
 if numel(Sdf.BdBox) < 6
     [X,Y] = meshgrid(x,y);
     V =  [X(:),Y(:)];
@@ -379,6 +378,57 @@ for ii = 1:numel(C)
 end
     
 end
+%---------------------------------------------------------- compute inertia
+function [Jtt, Att] = inertia(Sdf,varargin)
+
+    Sdf = vararginParser(Sdf,varargin{:});
+
+    Q = Sdf.options.Quality;
+
+    x0 = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
+    y0 = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
+    [X0,Y0] = meshgrid(x0,y0);
+    
+    % get tangent-sub volume
+    dv = (x0(2) - x0(1))*(y0(2) - y0(1));
+    
+    % generate image from cross-section
+    D   = Sdf.eval([X0(:),Y0(:)]);
+    rho = (D(:,end)<1e-5);
+    
+    I0 = reshape(rho,[Q,Q]);
+    
+    % https://ocw.mit.edu/courses/aeronautics-and-astronautics/
+    % 16-07-dynamics-fall-2009/lecture-notes/MIT16_07F09_Lec26.pdf
+    x0 = x0 - Sdf.options.Center(1);
+    y0 = y0 - Sdf.options.Center(2);
+    X0 = X0 - Sdf.options.Center(1);
+    Y0 = Y0 - Sdf.options.Center(2);
+    
+    % evaluate slice volume
+    Att = sum(sum(I0*dv));
+    
+    % evaluate 2nd-moment inertia
+    Jxx = trapz(y0,trapz(x0,(Y0.^2).*I0,2))/Att;
+    Jyy = trapz(y0,trapz(x0,(X0.^2).*I0,2))/Att;
+    Jzz = trapz(y0,trapz(x0,(X0.^2 + Y0.^2).*I0,2))/Att;
+    
+    Jxy = trapz(y0,trapz(x0,(X0.*Y0).*I0,2))/Att;
+    Jxz = 0*trapz(y0,trapz(x0,(X0.*Y0).*I0,2))/Att;
+    Jyz = 0*trapz(y0,trapz(x0,(X0.*Y0).*I0,2))/Att;
+    
+    P = eye(3);
+    P = [P(:,3),P(:,1),P(:,2)];
+    
+    Jtt = [Jxx, Jxy, Jxz; 
+           Jxy, Jyy, Jyz;
+           Jxz, Jyz, Jzz];
+
+    Jtt = (Jtt.' + Jtt) * 0.5;
+    %Jtt = P.' * J * P;                      
+    
+    %Shapes.Mtt = Shapes.Material.Density*blkdiag(Shapes.Jtt,Shapes.Att*eye(3));
+end   
 %-------------------------------------------- find closest point on surface
 function P = surfaceproject(Sdf,p0)
 
@@ -449,13 +499,13 @@ obj.bake.render();
 Sdf.Gmodel = obj;
 end
 %------------------------------------------------------------- show contour
-function [h, I] = showcontour(Sdf,varargin)
+function [h, V] = showcontour(Sdf,varargin)
     
     for ii = 1:2:length(varargin)
         Sdf.options.(varargin{ii}) = varargin{ii+1};
     end
     
-    Q = Sfd.options.Quality;
+    Q = Sdf.options.Quality;
 
     x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
     y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
@@ -467,6 +517,8 @@ function [h, I] = showcontour(Sdf,varargin)
         D = Sdf.eval([X(:),Y(:)]);
         D = abs(D(:,end)).^(0.75).*sign(D(:,end));
         
+        V = [X(:),Y(:)];
+        V = V(D<1e-6,:);
         D(D>1e-6) = NaN;
         
         figure(101);
@@ -474,15 +526,15 @@ function [h, I] = showcontour(Sdf,varargin)
         axis equal; hold on;
         I = frame2im(getframe(gca));
         
-        contour3(X,Y,reshape(D,[Q Q]),...
-            [0 0]);
+        hh = contour3(X,Y,reshape(D,[Q Q]),...
+            [-2e6 -1e-6],'k');
         
         axis(Sdf.BdBox*1.01);
 
         colormap([Sdf.options.Color; Sdf.options.Color]);
         view(0,90);
         drawnow;
-        I = frame2im(getframe(gca));
+        %I = frame2im(getframe(gca));
         
     else
         hold on;

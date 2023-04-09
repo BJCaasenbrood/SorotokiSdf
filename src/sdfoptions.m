@@ -8,6 +8,7 @@ classdef sdfoptions
         StepTolerance;
         Quality;
         Rotation;
+        Center;
     end
     
     methods
@@ -19,6 +20,7 @@ classdef sdfoptions
             obj.ColorMap = cmap_viridis;
             obj.Quality   = 75;
             obj.StepTolerance = 1e-5;
+            obj.Center = [0;0;0];
         end
     end
 end
