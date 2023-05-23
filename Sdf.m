@@ -1,22 +1,11 @@
 classdef Sdf
-     
-    properties
-        sdf;
-        BdBox;
-        Gmodel;
-        options;
-        %cmap;
-        %color;
-        %eps;
-        
-        % Node;      
-        % Element;
-        % Sample;
-        % Quality;
-        % Velocity;
-        % Rotation;
-        % Center;
-    end
+ 
+properties
+    sdf;
+    BdBox;
+    Gmodel;
+    options;
+end
     
 %--------------------------------------------------------------------------    
     methods        
@@ -25,10 +14,7 @@ classdef Sdf
             obj.sdf      = @(x) [fnc(x),fnc(x)];          
             obj.options = sdfoptions;
 
-            for ii = 1:2:length(varargin)
-                obj.(varargin{ii}) = varargin{ii+1};
-            end  
-            %obj = vararginParser(obj,varargin{:});
+            obj = vararginParser(obj,varargin{:});
         end
 %-------------------------------------------------------------------- union
         function r = plus(obj1,obj2)
@@ -298,7 +284,7 @@ end
 d = Sdf.sdf(x);
 end
 %--------------------------------------------------------- evalution of SDF
-function y = intersect(Sdf,x,varargin)
+function [y, I] = intersect(Sdf,x,varargin)
 if isempty(varargin)
     delta = 0;
 else
@@ -306,6 +292,9 @@ else
 end
 d = Sdf.sdf(x);
 y = d(:,end)<delta;
+
+List = 1:numel(y);
+I = List(y);
 end
 %--------------------------------------------------------- evalution of SDF
 function [Nds,X,Y] = sampleSet(Sdf)
@@ -327,13 +316,11 @@ function [T,N,B,Z] = normal(Sdf,x)
 d = Sdf.sdf(x);
 N = zeros(size(x,1),3);
 
-eps = Sdf.options.Tolerance;
+eps = Sdf.options.StepTolerance;
 
 if size(x,2) == 2
     n1 = (Sdf.sdf(x+repmat([eps,0],size(x,1),1))-d)/eps;
     n2 = (Sdf.sdf(x+repmat([0,eps],size(x,1),1))-d)/eps;
-    %[Fy] = gradient(d(:,end));   
-    %T = [Fy(:,1),Fy(:,2)];
     N(:,1) = n1(:,end);
     N(:,2) = n2(:,end);
 else
@@ -343,14 +330,19 @@ else
     N(:,1) = n1(:,end);
     N(:,2) = n2(:,end);
     N(:,3) = n3(:,end);
-    %N = [n1(:,end),n2(:,end),n3(:,end)];
 end
 
 N = N./sqrt((sum((N.^2),2)) + 1e-3 );
 T = ([0,1,0;-1,0,0;0,0,1]*N.').';
 B = cross(T,N);
 Z = atan2(N(:,2).*sign(-d(:,end)),N(:,1).*sign(-d(:,end)));
-    
+   
+if size(x,2) == 2
+    T = T(:,1:2);
+    B = B(:,1:2);
+    N = N(:,1:2);
+end
+
 end
 %------------------------------------------------- evalution of tangent SDF
 function C = centerofmass(Sdf,varargin)
@@ -417,17 +409,11 @@ function [Jtt, Att] = inertia(Sdf,varargin)
     Jxz = 0*trapz(y0,trapz(x0,(X0.*Y0).*I0,2))/Att;
     Jyz = 0*trapz(y0,trapz(x0,(X0.*Y0).*I0,2))/Att;
     
-    P = eye(3);
-    P = [P(:,3),P(:,1),P(:,2)];
-    
     Jtt = [Jxx, Jxy, Jxz; 
            Jxy, Jyy, Jyz;
            Jxz, Jyz, Jzz];
 
     Jtt = (Jtt.' + Jtt) * 0.5;
-    %Jtt = P.' * J * P;                      
-    
-    %Shapes.Mtt = Shapes.Material.Density*blkdiag(Shapes.Jtt,Shapes.Att*eye(3));
 end   
 %-------------------------------------------- find closest point on surface
 function P = surfaceproject(Sdf,p0)
@@ -437,11 +423,13 @@ P = zeros(size(p0));
 for ii = 1:size(p0,1)
     Nd = p0(ii,:);
     Dist = 1e3;
-    while abs(Dist) > 1e-2
-        D = eval(Sdf,[Nd]); 
+    jj = 1;
+    while abs(Dist) > 1e-2 && jj < 100
+        D = Sdf.eval([Nd]); 
         [~,N] = normal(Sdf,[Nd;Nd]);
         Dist = D(end);
-        Nd = Nd - 0.5*N(end,:)*Dist;
+        Nd = Nd - 0.99*N(end,:)*Dist;
+        jj = jj + 1;
     end
     
     P(ii,:) = Nd;
