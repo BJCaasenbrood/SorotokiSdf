@@ -24,8 +24,10 @@ y1 = 0;
 y2 = 1;
 
 if nargin == 1
-   x2 = varargin{1};
-   y2 = varargin{1};
+   x1 = -varargin{1}/2;
+   y1 = -varargin{1}/2;
+   x2 = varargin{1}/2;
+   y2 = varargin{1}/2;
 elseif nargin == 2
    if numel(varargin{1}) == 1
        x2 = varargin{1};
