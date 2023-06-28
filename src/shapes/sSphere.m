@@ -17,6 +17,7 @@ elseif nargin > 1
         error('Translation should be of size 3 in sCircle(r,[x,y,z])');
     end    
 end
+
 sdf = Sdf(@(P) sdfSphere(P,xc,yc,zc,r));
 
 sdf.BdBox = [xc-r-1e-6,xc+r+1e-6,....
