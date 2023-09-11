@@ -10,59 +10,11 @@ end
 %--------------------------------------------------------------------------    
     methods        
 %---------------------------------------------------- Signed Distance Class     
-        function obj = Sdf(fnc,varargin)
-            obj.sdf      = @(x) [fnc(x),fnc(x)];          
+        function obj = Sdf(f,varargin)
+            obj.sdf      = @(x) [f(x), f(x)];          
             obj.options = sdfoptions;
 
             obj = vararginParser(obj,varargin{:});
-        end
-%-------------------------------------------------------------------- union
-        function r = plus(obj1,obj2)
-            if ~isempty(obj2)
-                r = Sdf(@(x) dUnion(obj1.sdf(x),obj2.sdf(x)));
-            else
-                r = obj1;
-                obj2 = obj1;
-            end
-            
-            B1 = box2node(obj1.BdBox); 
-            B2 = box2node(obj2.BdBox);
-            
-            if norm(B1) == Inf
-                r.BdBox = B2;
-            elseif norm(B2) == Inf
-                r.BdBox = B1;
-            else
-                B = [box2node(obj1.BdBox); 
-                     box2node(obj2.BdBox)];
-                 
-                r.BdBox = boxhull(B);
-            end
-            r.BdBox = (r.BdBox(:)).';
-        end
-%--------------------------------------------------------------- difference        
-        function r = minus(obj1,varargin)
-            obj2 = varargin{1};
-            fnc = @(x) dDiff(obj1.sdf(x),obj2.sdf(x));
-            r = Sdf(fnc);
-            r.BdBox = obj1.BdBox;
-        end
-%---------------------------------------------------------------- intersect        
-        function r = mrdivide(obj1,obj2)
-            fnc = @(x) dIntersect(obj1.sdf(x),obj2.sdf(x));
-            r = Sdf(fnc);
-            B1 = box2node(obj1.BdBox); 
-            B2 = box2node(obj2.BdBox);
-            
-            if norm(B1) == Inf
-                r.BdBox = B2;
-            elseif norm(B2) == Inf
-                r.BdBox = B1;
-            else
-                B = [box2node(obj1.BdBox); 
-                     box2node(obj2.BdBox)];
-                r.BdBox = boxhull(B);
-            end
         end
 %---------------------------------------------------------------- intersect                
         function r = repeat(obj,dX,varargin)
@@ -113,23 +65,6 @@ end
             end
             
         end
-%----------------------------------------------------------- rotate X <-> Y          
-        function r = translate(obj1,move)
-            
-           B = obj1.BdBox; 
-           y = @(x) x - repmat(move(:)',size(x,1),1);
-           r = Sdf(@(x) obj1.sdf(y(x)));
-           
-           if numel(move) == 2
-               r.BdBox = [B(1)+move(1), B(2)+move(1),               ...
-                                  B(3)+move(2), B(4)+move(2)];    
-           else
-               r.BdBox = [B(1)+move(1), B(2)+move(1),               ...
-                                  B(3)+move(2), B(4)+move(2),               ...
-                                  B(5)+move(3), B(6)+move(3)];     
-           end
-           
-        end        
 %----------------------------------------------------------- rotate X <-> Y              
         function r = rotate(obj1,varargin)
             
@@ -226,9 +161,6 @@ end
             end
             
             fnc = @(x) Extrude(x,obj1,z1,z2);
-%             
-%             fnc = @(x) max([obj1.eval(x(:,1:2)),...
-%                 z1-x(:,3)+1e-12, x(:,3)-z2],[],2);
             
             r = Sdf(fnc);
             r.BdBox  = [obj1.BdBox,z1,z2];
