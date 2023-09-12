@@ -4,7 +4,6 @@
 % Initialize the test suite
 % Add test cases here
 
-clf;
 s = sCircle(1) - sCircle(1.25,[-1,-1]);
 s.BdBox = [-2,2,-2,2];
 s.options.Quality = 120;
@@ -14,8 +13,6 @@ R  = 1.25*sqrt(2);
 P  = R.*[cos(th),sin(th)];
 
 s.show();
-tic;
 prj = s.surfaceproject(P);
-toc;
 fplot(P,'k.','MarkerSize',20);
 fplot(prj,'w.','MarkerSize',20);
