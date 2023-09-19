@@ -1,4 +1,27 @@
 function C = centerofmass(Sdf,varargin)
+% CENTEROFMASS calculates the center of mass for a given shape.
+%
+%   C = CENTEROFMASS(SDF) calculates the center of mass for the given 
+%   shape defined by the signed distance function (SDF). The SDF can be 
+%   provided as an input argument. 
+%
+%   C = CENTEROFMASS(SDF, Name, Value) specifies additional options using
+%   name-value pairs:
+%     - 'Quality': Specifies the number of points to use for sampling the
+%       shape. Default value is 100.
+%
+%   Input arguments:
+%   - Sdf: Signed distance function representing the shape.
+%
+%   Output arguments:
+%   - C: Center of mass coordinates.
+%
+%   Example:
+%      sdf = ... % define the signed distance function for the shape
+%      com = centerofmass(sdf);
+%      fprintf('The center of mass is located at (%f,%f).\n', com(1), com(2));
+%
+%   See also inertia.    
 
     Sdf = vararginParser(Sdf,varargin{:});    
     
@@ -21,5 +44,4 @@ function C = centerofmass(Sdf,varargin)
     for ii = 1:numel(C)
        C(ii) = mean(V(I,ii));
     end
-        
 end

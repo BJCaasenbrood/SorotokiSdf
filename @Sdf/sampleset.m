@@ -13,5 +13,4 @@ function [Nds,X,Y] = sampleset(Sdf)
 
     [X,Y] = meshgrid(x,y);
     Nds = [X(:), Y(:)];
-    
 end

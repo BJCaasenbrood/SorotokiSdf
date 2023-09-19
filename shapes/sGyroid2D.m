@@ -16,32 +16,33 @@
 %
 %   See also SDF, DCIRCLE
 
-function sdf = sCircle(varargin)
-r  = 1;
+function sdf = sGyroid2D(varargin)
+r  = 0.75;
+w  = 2*pi;
 xc = 0;
 yc = 0;
 
 if nargin == 1
-    r  = abs(varargin{1}); 
-elseif nargin > 1
-    r = abs(varargin{1});
-    if numel(varargin{2}) == 2
-        v  = varargin{2};
-        xc = v(1); 
-        yc = v(2);
-    else
-        error('Translation should be of size 2 in sCircle(r,[x,y])');
-    end    
+    w  = abs(varargin{1}) * 2 * pi; 
+elseif nargin == 2
+    w  = abs(varargin{1}) * 2 * pi; 
+    r  = abs(varargin{1});
 end
 
 eps = 1e-4*r;
-sdf = Sdf(@(P) dCircle(P,xc,yc,r));
-sdf.BdBox = [xc - r - eps, xc + r + eps, ...
-             yc - r - eps, yc + r + eps];
+sdf = Sdf(@(P) dGyroid(P,r,w));
+sdf.BdBox = [xc - w/pi - eps, xc + w/pi + eps, ...
+             yc - w/pi - eps, yc + w/pi + eps]/2;
+
 sdf.options.Quality = 200;
 end
 
-function d = dCircle(P,xc,yc,r)
-d = sqrt((P(:,1) - xc).^2 + (P(:,2) - yc).^2) - r;
+function d = dGyroid(P,r,w)
+Z = pi;
+
+x = P(:,1);
+y = P(:,2);
+
+d = abs(sin(w * x) .* cos(w * y) + sin(w * y)*cos(w*Z) + sin(w*Z)*cos(w*x)) - r;
 d = [d,d];
 end

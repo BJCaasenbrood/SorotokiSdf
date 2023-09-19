@@ -1,8 +1,13 @@
 function sdf = sCube(varargin)
 
-a = 0.5; x1 = -a; 
+a = 0.5; 
+x1 = -a; 
 
-if numel(varargin{1}) == 1
+if isempty(varargin)
+    x1 = -a; x2 = a; 
+    y1 = -a; y2 = a; z1 = -a;
+    z2 = a;
+elseif numel(varargin{1}) == 1
     a = varargin{1}; x1 = -a; x2 = a; 
     y1 = -a; y2 = a; z1 = -a;
     z2 = a;

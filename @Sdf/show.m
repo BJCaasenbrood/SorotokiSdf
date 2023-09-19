@@ -1,7 +1,11 @@
 function show(Sdf,varargin)
 
     for ii = 1:2:length(varargin)
-        Sdf.(varargin{ii}) = varargin{ii+1};
+        if isprop(Sdf.options,varargin{ii})
+            Sdf.options.(varargin{ii}) = varargin{ii+1};
+        else
+            Sdf.(varargin{ii}) = varargin{ii+1};
+        end
     end
     
     Q = Sdf.options.Quality;

@@ -1,8 +1,8 @@
 function sdf = sLine(varargin)
 x1 = 0;
-x2 = 1;
+x2 = -1;
 y1 = 0;
-y2 = 1;
+y2 = 0;
 
 if nargin == 1
    x2 = varargin{1};
@@ -31,10 +31,9 @@ elseif nargin == 4
    y2 = varargin{4};
 end
 
-
 sdf = Sdf(@(P) sdfLine(P,x1,x2,y1,y2));
 
-if abs(atan2(y2-y1,x2-x1)) < 2*pi/300
+if abs(atan2(y2-y1,x2-x1)) < 2*pi/300 || (abs(atan2(y2-y1,x2-x1)) - pi) < 2*pi/300
     a = max(abs(x2-x1),abs(y2-y1));
     sdf.BdBox = [-a+x1,a+x1,-a+y1,a+y1];
 else

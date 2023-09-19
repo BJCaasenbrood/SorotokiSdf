@@ -32,9 +32,7 @@ function [h, V] = showContour(Sdf,varargin)
 
         colormap([Sdf.options.Color; Sdf.options.Color]);
         view(0,90);
-        drawnow;
-        %I = frame2im(getframe(gca));
-        
+        drawnow;       
     else
         hold on;
         h = patch('Vertices',Sdf.Node,'Faces',Sdf.Element,...

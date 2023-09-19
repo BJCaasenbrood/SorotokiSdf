@@ -1,5 +1,29 @@
-function r = extrude(obj1,varargin)
-            
+function out = extrude(obj1,varargin)
+% EXTRUDE extrudes a 2D shape to create a 3D shape.
+%
+%   R = EXTRUDE(OBJ1, Z1) extrudes the 2D shape represented by OBJ1 along the 
+%   z-axis from z=0 to z=1. 
+%
+%   R = EXTRUDE(OBJ1, Z1, Z2) extrudes the 2D shape represented by OBJ1 
+%   along the z-axis from z=Z1 to z=Z2. Z1 and Z2 are scalar values 
+%   specifying the start and end heights of the extrusion, respectively.
+%
+%   Input arguments:
+%   - obj1: 2D Sdf class;
+%   - varargin: Variable number of input arguments.
+%       * If numel(varargin) == 1, Z1 is set to 0 and Z2 is set to varargin{1}.
+%       * If numel(varargin) == 2, Z1 is set to varargin{1} and Z2 is set to varargin{2}.
+%
+%   Output arguments:
+%   - out: 3D shape object representing the extruded shape.
+%
+%   Example:
+%      obj1 = ... % define the 2D shape object
+%      extrudedObj = extrude(obj1);
+%      extrudedObj.show();
+%
+%   See also REVOLVE.
+
     if numel(varargin) == 1
         z1 = 0;
         z2 = varargin{1};
@@ -25,6 +49,6 @@ function r = extrude(obj1,varargin)
     
     fnc = @(x) Extrude(x,obj1,z1,z2);
     
-    r = Sdf(fnc);
-    r.BdBox  = [obj1.BdBox,z1,z2];
+    out = Sdf(fnc);
+    out.BdBox  = [obj1.BdBox,z1,z2];
 end
