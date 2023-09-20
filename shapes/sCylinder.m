@@ -1,22 +1,68 @@
-function sdf = sCylinder(xc,yc,z1,z2,r)
-if nargin < 2
-    r  = xc;
-    z2 = 2*xc;
-    xc = 0;
-    yc = 0;
-    z1 = 0;
+function sdf = sCylinder(varargin)
+% SCYLINDER Create a signed distance function (SDF) for a cylinder.
+%
+%   sdf = sCylinder() creates an SDF for a unit cylinder centered at the
+%       origin with height 2 units.
+%   sdf = sCylinder(r) creates an SDF for a cylinder with radius r and
+%       height 2 units, centered at the origin.
+%   sdf = sCylinder(r, z2) creates an SDF for a cylinder with radius r and
+%       height z2, centered at the origin.
+%   sdf = sCylinder(r, [z1, z2]) creates an SDF for a cylinder with radius r
+%       and height z2, starting from z1, centered at the origin.
+%   sdf = sCylinder(r, [z1, z2], [xc, yc, zc]) creates an SDF for a cylinder
+%       with radius r and height z2, starting from z1, centered at the point
+%       (xc, yc, zc).
+%
+%   Input:
+%       r - Radius of the cylinder (default: 1)
+%       z1 - Starting height of the cylinder (default: 0)
+%       z2 - Ending height of the cylinder (default: 2)
+%       xc - x-coordinate of the center of the cylinder (default: 0)
+%       yc - y-coordinate of the center of the cylinder (default: 0)
+%
+%   Output:
+%       sdf - Signed distance function for the cylinder
+%
+%   Example:
+%       sdf = sCylinder(2, [1, 4], [3, -2, 1]);
+%
+%   See also: DCYLINDER, SCIRCLE, SCUP
+
+r  = 1;
+z2 = 2;
+xc = 0;
+yc = 0;
+z1 = 0;
+
+if numel(varargin) == 1
+    r = varargin{1};
+elseif numel(varargin) == 2
+    if numel(varargin{1}) == 1 &&  numel(varargin{2}) == 1
+        r = varargin{1};
+        z2 = varargin{2};
+    elseif numel(varargin{1}) == 1 &&  numel(varargin{2}) == 2
+        r = varargin{1};
+        z1 = varargin{2}(1);
+        z2 = varargin{2}(2);
+    end
+elseif numel(varargin) == 3
+    r = varargin{1};
+    xc = varargin{3}(1);
+    yc = varargin{3}(2);
+    z1 = varargin{3}(3);
+    if numel(varargin{2}) == 1
+        z2 = z1 + varargin{2};
+    elseif numel(varargin{2}) == 2
+        z2 = z1 + varargin{2}(2);
+        z1 = z1 + varargin{2}(1);
+    end
 end
 
 sdf = Sdf(@(P) sdfCylinder(P,xc,yc,z1,z2,r));
 
 sdf.BdBox = [xc-r-1e-6,xc+r+1e-6,....
              yc-r-1e-6,yc+r+1e-6,...
-             z1-1e-6,z2+1e-6];
-         
-%sdf.Center = sdf.centerofmass();         
-         
-%[sdf.Node,sdf.Element] = generateNodeSet(xc,yc,z1,z2,r,30);
-         
+             z1-1e-6,z2+1e-6];         
 end
 
 function d = sdfCylinder(P,xc,yc,z1,z2,r)

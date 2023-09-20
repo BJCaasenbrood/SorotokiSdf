@@ -1,17 +1,40 @@
 function sdf = sLine(varargin)
+% SLINE Creates a line segment in 2D space. Note left-hand side is defined as inside the SDF fucntion.
+%
+% Syntax:
+%   sdf = sLine(varargin)
+%
+% Description:
+%   This function creates a line segment in 2D space. The line can be
+%   defined by specifying different input arguments.
+%
+% Input:
+%   varargin (optional) - Variable number of input arguments.
+%     - If nargin == 1, 
+%       - sLine([x2,y2]), sets line from [0,0,] to [x2,y2]
+%     - If nargin == 2,
+%       - sLine(x2,y2), sets line from [0,0] to [x2,y2].
+%       - sLine([x1,y1],[x2,y2]), sets line from [x1,y1] to [x2,y2].
+%     - If nargin == 4, 
+%       - sLine(x1,x2,y1,y2) to make line from [x1,y1] to [x2,y2].
+%
+% Output:
+%   sdf - Sdf object representing the line segment.
+% See also: sdfLine, Sdf
+    
 x1 = 0;
 x2 = -1;
 y1 = 0;
 y2 = 0;
 
-if nargin == 1
+if nargin == 1  % sets line from [0,0] to [x2,y2]
    x2 = varargin{1};
    y2 = varargin{1};
 elseif nargin == 2
-   if numel(varargin{1}) == 1
+   if numel(varargin{1}) == 1 % sets line from [0,0] to [x2,y2]
        x2 = varargin{1};
        y2 = varargin{2};
-   elseif numel(varargin{1}) == 2
+   elseif numel(varargin{1}) == 2 % sets line from [x1,y1] to [x2,y2]
        p0 = varargin{1}; p1 = varargin{2};
        x1 = p0(1);
        y1 = p0(2);
@@ -24,7 +47,7 @@ elseif nargin == 2
    else
       error('Wrong input for sLine');
    end
-elseif nargin == 4
+elseif nargin == 4 % uses input [x1,x2,y1,y2] to make line from [x1,y1] to [x2,y2]
    x1 = varargin{1};
    y1 = varargin{3};
    x2 = varargin{2};

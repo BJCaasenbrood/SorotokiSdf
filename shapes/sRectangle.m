@@ -1,23 +1,39 @@
-%SRECTANGLE creates a signed distance function (SDF) of a rectangle
-%
-%   sdf = sRectangle() creates a default rectangle with its bottom-left corner 
-%   at (0,0) and its top-right corner at (1,1)
-% 
-%   sdf = sRectangle(L) creates a square with side length L
-% 
-%   sdf = sRectangle(W, H) creates a rectangle with width W and height H
-% 
-%   sdf = sRectangle([x1,y1], [x2,y2]) creates a rectangle with bottom-left 
-%   corner at (x1, y1) and top-right corner at (x2, y2)
-% 
-%   sdf = sRectangle(x1, x2, y1, y2) creates a rectangle with bottom-left
-%   corner at (x1, y1) and top-right corner at (x2, y2)
-%
-% The function outputs a 'sdf' object, which is a representation of the SDF of the rectangle. 
-%
-%   See also SCIRCLE, SCUBE
-
 function sdf = sRectangle(varargin)
+% SRECTANGLE Create a rectangle shape with specified dimensions.
+%
+%   sdf = sRectangle() creates a rectangle with default dimensions of 1x1,
+%       centered at the origin (0,0).
+%   sdf = sRectangle(length) creates a square with sides of length 'length',
+%       centered at the origin (0,0).
+%   sdf = sRectangle(width, height) creates a rectangle with the specified
+%       width and height, centered at the origin (0,0).
+%   sdf = sRectangle([x1, y1], [x2, y2]) creates a rectangle with the specified
+%       coordinates of its bottom-left corner (x1, y1) and top-right corner
+%       (x2, y2).
+%   sdf = sRectangle(x1, x2, y1, y2) creates a rectangle with the specified
+%       coordinates of its bottom-left corner (x1, y1) and top-right corner
+%       (x2, y2).
+%
+%   Input:
+%       - length: Length of the sides of the square (default: 1)
+%       - width: Width of the rectangle
+%       - height: Height of the rectangle
+%       - x1: X-coordinate of the bottom-left corner
+%       - x2: X-coordinate of the top-right corner
+%       - y1: Y-coordinate of the bottom-left corner
+%       - y2: Y-coordinate of the top-right corner
+%
+%   Output:
+%       - sdf: The created rectangle shape
+%
+%   Example:
+%      
+%       sdf = sRectangle(2);  % Create a square with sides of length 2
+%       sdf = sRectangle(3, 4) % Create a rectangle with width 3 and height 4
+%       sdf = sRectangle(-1, 2, -2, 3); % Create a rectangle with custom coordinates
+%
+%   See also: sCircle, sPolygon
+
 x1 = 0;
 x2 = 1;
 y1 = 0;

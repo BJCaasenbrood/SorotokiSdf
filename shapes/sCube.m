@@ -1,4 +1,29 @@
 function sdf = sCube(varargin)
+% SCUBE This function creates a signed distance field (SDF) for a cube.
+%
+%   sdf = sCube() an SDF for a unit cube centered at the origin.
+%   sdf = sCube(a) a cube with side length 2*a centered at the origin.
+%   sdf = sCube(X,Y) a cube defined by the coordinates of 
+%       two opposite corners: [x1, y1, z1] and [x2, y2, z2].
+%   sdf = sCube(X1, X2, Y1, Y2, Z1, Z2) creates an SDF for a cube defined
+%       by the coordinates of two opposite corners: [X1, Y1, Z1] and [X2, Y2, Z2].
+%
+%   Input:
+%       - varargin: Variable number of input arguments.
+%           - a: Side length of the cube. Default is 0.5.
+%           - X, Y: Coordinates of two opposite corners of the cube: [x1, y1, z1] and [x2, y2, z2].
+%           - X1, X2, Y1, Y2, Z1, Z2: Coordinates of two opposite corners of the cube: [X1, Y1, Z1] and [X2, Y2, Z2].
+%
+%   Output:
+%       - sdf: Signed distance field (SDF) for the cube.
+%
+% Example usage:
+%   sdf = sCube(); % Creates an SDF for a unit cube centered at the origin.
+%   sdf = sCube(1); % Creates an SDF for a cube with side length 2 centered at the origin.
+%   sdf = sCube([0, 0, 0], [1, 1, 1]); % Creates an SDF for a cube defined by two opposite corners: [0, 0, 0] and [1, 1, 1].
+%   sdf = sCube(0, 1, 0, 1, 0, 1); % Creates an SDF for a cube defined by two opposite corners: [0, 0, 0] and [1, 1, 1].
+%
+% See also: dCube
 
 a = 0.5; 
 x1 = -a; 

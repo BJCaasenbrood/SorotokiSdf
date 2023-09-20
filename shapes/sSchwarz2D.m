@@ -1,21 +1,3 @@
-%SCIRCLE - returns a signed distance function for a circle
-%
-%   sdf = sCircle(r) returns a signed distance function for a circle with 
-%   radius r and centered at the origin (0, 0).
-%
-%   sdf = sCircle(r, [x, y]) returns a signed distance function for a circle 
-%   with radius r and centered at point (x, y).
-%
-%   The output sdf is a SDF object that can be used to evaluate the signed
-%   distance of a given point to the circle.
-%
-%   Example:
-%       sdf = sCircle(1, [0, 0])
-%       point = [-0.5, 0.5];
-%       dist = sdf.eval(point)
-%
-%   See also SDF, DCIRCLE
-
 function sdf = sSchwarz2D(varargin)
 r = 1;
 w = 2;

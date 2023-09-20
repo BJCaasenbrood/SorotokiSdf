@@ -1,32 +1,34 @@
-%SCIRCLE - returns a signed distance function for a circle
+function sdf = sGyroid2D(varargin)
+% SGYROID2D This function generates a 2D gyroid structure.
 %
-%   sdf = sCircle(r) returns a signed distance function for a circle with 
-%   radius r and centered at the origin (0, 0).
+%   sdf = sGyroid2D() generates a 2D gyroid structure with default parameters.
+%   sdf = sGyroid2D(w) generates a 2D gyroid structure with the specified frequency w.
+%   sdf = sGyroid2D(w, r) generates a 2D gyroid structure with the specified frequency w and thickness r.
 %
-%   sdf = sCircle(r, [x, y]) returns a signed distance function for a circle 
-%   with radius r and centered at point (x, y).
+%   Input:
+%       - varargin: Variable number of input arguments.
+%           - w: Frequency of the gyroid structure (default: 2*pi).
+%           - r: Thickness of the gyroid structure (default: 0.75).
 %
-%   The output sdf is a SDF object that can be used to evaluate the signed
-%   distance of a given point to the circle.
+%   Output:
+%       - sdf: Signed distance field representing the gyroid structure.
 %
 %   Example:
-%       sdf = sCircle(1, [0, 0])
-%       point = [-0.5, 0.5];
-%       dist = sdf.eval(point)
+%       sdf = sGyroid2D(); % Generates a 2D gyroid structure with default parameters.
+%       sdf = sGyroid2D(3); % Generates a 2D gyroid structure with frequency 3.
+%       sdf = sGyroid2D(3, 1.5); % Generates a 2D gyroid structure with frequency 3 and thickness 1.5.
 %
-%   See also SDF, DCIRCLE
 
-function sdf = sGyroid2D(varargin)
 r  = 0.75;
 w  = 2*pi;
 xc = 0;
 yc = 0;
 
 if nargin == 1
-    w  = abs(varargin{1}) * 2 * pi; 
+    w  = abs(varargin{1}) * 2 * pi;  % set the frequency
 elseif nargin == 2
-    w  = abs(varargin{1}) * 2 * pi; 
-    r  = abs(varargin{1});
+    w  = abs(varargin{1}) * 2 * pi; % set the frequency
+    r  = abs(varargin{1});  % set thickeness of gyroid structure
 end
 
 eps = 1e-4*r;

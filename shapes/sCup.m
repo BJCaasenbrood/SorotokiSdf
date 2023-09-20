@@ -1,14 +1,25 @@
-%SCAP - returns a 2D signed distance function for a cupped rectangle
-%
-%   sdf = sCup(r, x) creates a 2D signed distance function for a cupped circle 
-%   with radius r and height x. If x is negative, the shape is reversed.
-%
-%   Example: 
-%       sdf = sCup(1, 2)
-%    
-%   See also SDF, SCAP, SCIRCLE
-
 function sdf = sCup(varargin)
+% SCUP Creates a signed distance field (SDF) for a cup shape.
+%
+%   sdf = sCup() creates an SDF for a cup with default parameters.
+%   sdf = sCup(r) creates an SDF for a cup with the specified radius r.
+%   sdf = sCup(r, x) creates an SDF for a cup with the specified radius r
+%   and height x.
+%
+% Input:
+%   - r: The radius of the cup (default: 1).
+%   - x: The height of the cup (default: 1).
+%
+% Output:
+%   - sdf: The signed distance field (SDF) for the cup shape.
+%
+% Example:
+%   sdf = sCup(); % Creates an SDF for a cup with default parameters.
+%   sdf = sCup(2); % Creates an SDF for a cup with radius 2.
+%   sdf = sCup(2, 3); % Creates an SDF for a cup with radius 2 and height 3.
+%
+% See also: Sdf, dDiff, dRectangle, dCircle
+
 r  = 1;
 xc = 0;
 yc = 0;
