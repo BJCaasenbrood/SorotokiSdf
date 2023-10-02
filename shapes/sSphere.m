@@ -1,3 +1,27 @@
+% SSPHERE Creates a sphere surface distance field.
+%
+%   sdf = sSphere(varargin)
+%
+%   This function creates a sphere surface distance field. The sphere is
+%   defined by its radius and center coordinates.
+%
+% Input:
+%   varargin - Optional input arguments. The following options are
+%              available:
+%              - r: The radius of the sphere. Default is 1.
+%              - [x, y, z]: The center coordinates of the sphere. Default
+%                is [0, 0, 0].
+%
+% Output:
+%   sdf - Sdf object representing the sphere surface distance field.
+%
+% Example:
+%       sdf = sSphere;      % generates unit-sphere
+%       sdf = sSphere(5)    % Sphere of r=5 at origin
+%       sdf = sSphere(5, [1,2,3]) % ... centered at [1,2,3] 
+%
+% See also: sdfSphere, Sdf
+
 function sdf = sSphere(varargin)
 r  = 1;
 xc = 0;

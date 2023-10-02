@@ -1,11 +1,7 @@
 function sdf = sLine(varargin)
 % SLINE Creates a line segment in 2D space. Note left-hand side is defined as inside the SDF fucntion.
 %
-% Syntax:
-%   sdf = sLine(varargin)
-%
-% Description:
-%   This function creates a line segment in 2D space. The line can be
+%   sdf = sLine(varargin) creates a line segment in 2D space. The line can be
 %   defined by specifying different input arguments.
 %
 % Input:

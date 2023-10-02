@@ -1,11 +1,14 @@
-%SPOLYLINE - returns a signed distance function for a polyline
+% SPOLYLINE Creates a polyline in 2D space.
 %
-%   sdf = sPolyline(X) returns a signed distance function for a polyline defined
-%   by a set of points X. Each row of X represents the x and y coordinates of a point 
-%   on the polyline.
+%   sdf = sPolyline(X)
 %
-%   The output sdf is a SDF object that can be used to evaluate the signed
-%   distance of a given point to the polyline.
+%   This function creates a polyline in 2D space. The polyline is defined
+%   by a set of points specified in the input argument X.
+%
+% Input:
+%   X - Matrix of size N-by-2, where N is the number of points in the
+%       polyline. Each row of X represents the coordinates of a point in
+%       the polyline.
 %
 %   Example:
 %       X = linspace(pi, 3*pi, 100).';

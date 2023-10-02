@@ -18,6 +18,7 @@ function sdf = sGyroid2D(varargin)
 %       sdf = sGyroid2D(3); % Generates a 2D gyroid structure with frequency 3.
 %       sdf = sGyroid2D(3, 1.5); % Generates a 2D gyroid structure with frequency 3 and thickness 1.5.
 %
+% See also: dSchwarz, Sdf, sSchwartz2D
 
 r  = 0.75;
 w  = 2*pi;

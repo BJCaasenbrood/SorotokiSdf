@@ -1,3 +1,37 @@
+% SSTRUT Creates a strut surface distance field.
+%
+% Syntax:
+%   sdf = sStrut(varargin)
+%
+% Description:
+%   This function creates a strut surface distance field. The strut is
+%   defined by its start and end points, as well as its thickness.
+%
+% Input:
+%   varargin - Optional input arguments. The following options are
+%              available:
+%              - x2: The x-coordinate of the end point of the strut. If
+%                only one argument is provided, both x2 and y2 will be set
+%                to that value. Default is 1.
+%              - y2: The y-coordinate of the end point of the strut. If
+%                only one argument is provided, both x2 and y2 will be set
+%                to that value. Default is 1.
+%              - [x1, y1]: The start point coordinates of the strut. If two
+%                arguments are provided, x1 and y1 will be set to the first
+%                argument, and x2 and y2 will be set to the second
+%                argument. Default is [0, 0].
+%              - [p0, p1]: The start and end point coordinates of the strut.
+%                If two 2D coordinate arrays are provided, x1, y1, x2, and
+%                y2 will be set accordingly. Default is [0, 0] and [1, 1].
+%              - T: The thickness of the strut. If only one argument is
+%                provided after the start and end points, T will be set to
+%                that value. Default is 0.5.
+%
+% Output:
+%   sdf - Sdf object representing the strut surface distance field.
+%
+% See also: sdfLine, Sdf
+
 function sdf = sStrut(varargin)
 
 x1 = 0;

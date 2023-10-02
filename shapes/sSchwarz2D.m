@@ -1,3 +1,26 @@
+% SSCHWARZ2D Creates a 2D Schwarz lantern surface distance field.
+%
+%   sdf = sSchwarz2D(varargin)
+%
+%   This function creates a 2D Schwarz lantern surface distance field. The
+%   Schwarz lantern is defined by two parameters: r and w. The optional
+%   parameter 'rotated' can be used to rotate the lantern.
+%
+% Input:
+%   varargin - Optional input arguments in name-value pairs. The following
+%              options are available:
+%              - 'rotated': A logical value indicating whether the lantern
+%                should be rotated. Default is false.
+%              - r: The radius of the lantern. Default is 1.
+%              - w: The width of the lantern. Default is 2.
+%
+% Output:
+%   sdf - Sdf object representing the Schwarz lantern surface distance
+%         field.
+%
+% See also: dSchwarz, Sdf
+
+
 function sdf = sSchwarz2D(varargin)
 r = 1;
 w = 2;

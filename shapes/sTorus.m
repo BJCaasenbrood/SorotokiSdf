@@ -1,3 +1,29 @@
+% STORUS Creates a signed distance field (SDF) for a torus shape.
+%
+%   sdf = sTorus() creates an SDF for a torus with default parameters.
+%   sdf = sTorus(rc) creates an SDF for a torus with the specified outer radius rc.
+%   sdf = sTorus(rc, rt) creates an SDF for a torus with the specified outer radius rc
+%   and inner radius rt.
+%   sdf = sTorus(rc, rt, v) creates an SDF for a torus with the specified outer radius rc,
+%   inner radius rt, and translation vector v.
+%
+% Input:
+%   - rc: The outer radius of the torus (default: 2.5).
+%   - rt: The inner radius of the torus (default: 1).
+%   - v: The translation vector of the torus (default: [0, 0, 0]).
+%
+% Output:
+%   - sdf: The signed distance field (SDF) for the torus shape.
+%
+% Example:
+%   sdf = sTorus(); % Creates an SDF for a torus with default parameters.
+%   sdf = sTorus(3); % Creates an SDF for a torus with outer radius 3.
+%   sdf = sTorus(3, 1.5); % Creates an SDF for a torus with outer radius 3 and inner radius 1.5.
+%   sdf = sTorus(3, 1.5, [1, 2, 3]); % Creates an SDF for a torus with outer radius 3, inner radius 1.5,
+%   and translation vector [1, 2, 3].
+%
+% See also: Sdf, dDiff, dRectangle, dCircle
+
 function sdf = sTorus(varargin)
 rt = 1;
 rc = 2.5;
