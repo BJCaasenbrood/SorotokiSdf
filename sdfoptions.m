@@ -1,7 +1,7 @@
 classdef sdfoptions
     
     properties
-        BdBox;
+        BdBox;     
         Dimension;
         Color;
         ColorMap;
@@ -12,10 +12,7 @@ classdef sdfoptions
     end
     
     methods
-        function obj = sdfoptions
-            %SDFOPTIONS Construct an instance of this class
-            %   Detailed explanation goes here
-            
+        function obj = sdfoptions          
             obj.Dimension = 2;
             obj.Color = [32, 129, 191]/255;
             obj.ColorMap = cmap_viridis;

@@ -32,10 +32,17 @@ if isempty(varargin)
     x1 = -a; x2 = a; 
     y1 = -a; y2 = a; z1 = -a;
     z2 = a;
-elseif numel(varargin{1}) == 1
+elseif numel(varargin{1}) == 1 && numel(varargin) == 1
     a = varargin{1}; x1 = -a; x2 = a; 
     y1 = -a; y2 = a; z1 = -a;
     z2 = a;
+elseif numel(varargin{1}) == 1 && numel(varargin) == 2
+    a = varargin{1}; 
+    p = varargin{2}; 
+    
+    x1 = -a + p(1); x2 = a + p(1); 
+    y1 = -a + p(2); y2 = a + p(2);
+    z1 = -a + p(3); z2 = a + p(3);
 elseif numel(varargin{1}) == 3
     X = varargin{1}; 
     x1 = 0; x2 = X(1);
