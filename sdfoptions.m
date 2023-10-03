@@ -1,8 +1,6 @@
 classdef sdfoptions
     
     properties
-        BdBox;     
-        Dimension;
         Color;
         ColorMap;
         StepTolerance;
@@ -13,7 +11,6 @@ classdef sdfoptions
     
     methods
         function obj = sdfoptions          
-            obj.Dimension = 2;
             obj.Color = [32, 129, 191]/255;
             obj.ColorMap = cmap_viridis;
             obj.Quality = 75;

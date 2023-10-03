@@ -1,15 +1,7 @@
 function [N,T,B,Z] = gradient(Sdf,x)
-% gradient - Computes the differential vector field of SDF function
+% GRADIENT - Computes the differential vector field of SDF function
 %
-% Syntax:
-%   [N, T, B, Z] = gradient(Sdf, x)
-%
-% Inputs:
-%   - Sdf: A structure containing the scalar field and options.
-%     - sdf: A function handle that computes the scalar field value at given points.
-%     - options: A structure containing various options.
-%       - StepTolerance: The step size for numerical differentiation.
-%   - x: An array of points at which to compute the normal vector.
+%   [N, T, B, Z] = Sdf.gradient(x)
 %
 % Outputs:
 %   - N: An array representing the normal vector at each point in x.
