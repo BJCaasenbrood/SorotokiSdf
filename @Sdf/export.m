@@ -1,19 +1,20 @@
-function export(Sdf,filename,varargin)
+function export(Sdf, filename, varargin)
+
+    if nargin < 2
+        filename = 'test';
+    end
 
     if ~contains(filename,'.stl')
         filename = [filename,'.stl'];
     end
 
     %enlarge bdbox by 2%
-    Sdf = enlargeBdBox(Sdf, Sdf.options.StepTolerance)
+    Sdf = enlargeBdBox(Sdf, Sdf.options.StepTolerance);
     obj = Gmodel(Sdf,'Quality',...
         Sdf.options.Quality,varargin{:});
 
-    FV = struct;
-    FV.vertices = obj.Node;
-    FV.faces    = obj.Element;
-
-    stlwriter(filename, FV);
+    FV = triangulation(obj.Element, obj.Node);
+    stlwrite(FV,filename,'text');
 end
 
 function Sdf = enlargeBdBox(Sdf, per)
