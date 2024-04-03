@@ -1,0 +1,80 @@
+[34;49m [0m[34;49m [0m[39;49mInstallation dir: /home/brandon/Documents/MATLAB/SorotokiCode/src/SorotokiSdf[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mDirectory mpm found: /home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mChecking for updates: MPM package library[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mSome required package are missing from MPM[0m[1;37;49m[0m
+[39;49m ╰╴ [0m[39;49mmatlabessentialskit[0m[1;37;49m[0m
+[33;49mHELP [0m[33;49;4mInstall missing MPM packages?[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mCalling MPM installer -- installing req. packages[0m[1;37;49m[0m
+[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0m{Unrecognized function or variable 'installMissingPackgeMPM'.
+
+Error in checkPackagesMPM (line 32)
+            installMissingPackgeMPM(misPackages{i});
+
+Error in installSorotoki (line 19)
+    checkPackagesMPM(reqPackages,mpmPackages);
+
+Error in sorotoki (line 82)
+        installSorotoki(reqPackages,soroPackages);
+} 
+clc
+sorotoki -i --approve
+[34;49m [0m[34;49m [0m[39;49mChecking for updates: MPM package library[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mSome required package are missing from MPM[0m[1;37;49m[0m
+[39;49m ╰╴ [0m[39;49mmatlabessentialskit[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mCalling MPM installer -- installing req. packages[0m[1;37;49m[0m
+[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0mUsing collection 'default'.
+Creating 'matlabessentialskit' collection.
+Found url: https://github.com/BJCaasenbrood/MatlabEssentialsKit/zipball/master
+Downloading 'https://github.com/BJCaasenbrood/MatlabEssentialsKit/zipball/master'.
+Adding package to metadata in '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/mpm.mat'.
+Updating paths.
+Adding to path: '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/matlabessentialskit'
+Adding paths to all sub-folders via --all-paths.
+[39;49m[0m[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0m[34;49m [0m[34;49m [0m[39;49mChecking for updates: Sorotoki library[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mSome Sorotoki packages are missing from MPM[0m[1;37;49m[0m
+[39;49m ├╴ [0m[39;49msorotokisdf[0m[1;37;49m[0m
+[39;49m ├╴ [0m[39;49msorotokimesh[0m[1;37;49m[0m
+[39;49m ├╴ [0m[39;49msorotokifem[0m[1;37;49m[0m
+[39;49m ╰╴ [0m[39;49msorotokimodel[0m[1;37;49m[0m
+[34;49m [0m[34;49m [0m[39;49mCalling MPM installer -- installing Sorotoki packages[0m[1;37;49m[0m
+[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0mUsing collection 'default'.
+Creating 'sorotokisdf' collection.
+Found url: https://github.com/BJCaasenbrood/SorotokiSdf/zipball/master
+Downloading 'https://github.com/BJCaasenbrood/SorotokiSdf/zipball/master'.
+Adding package to metadata in '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/mpm.mat'.
+Updating paths.
+Adding to path: './lib/sorotokisdf'
+Adding paths to all sub-folders via --all-paths.
+[39;49m[0m[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0mUsing collection 'default'.
+Creating 'sorotokimesh' collection.
+Found url: https://github.com/BJCaasenbrood/SorotokiMesh/zipball/master
+Downloading 'https://github.com/BJCaasenbrood/SorotokiMesh/zipball/master'.
+Adding package to metadata in '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/mpm.mat'.
+Updating paths.
+Adding to path: './lib/sorotokimesh'
+Adding paths to all sub-folders via --all-paths.
+[39;49m[0m[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0mUsing collection 'default'.
+Creating 'sorotokifem' collection.
+Found url: https://github.com/BJCaasenbrood/SorotokiFem/zipball/master
+Downloading 'https://github.com/BJCaasenbrood/SorotokiFem/zipball/master'.
+Adding package to metadata in '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/mpm.mat'.
+Updating paths.
+Adding to path: './lib/sorotokifem'
+Adding paths to all sub-folders via --all-paths.
+[39;49m[0m[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0mUsing collection 'default'.
+Creating 'sorotokimodel' collection.
+Found url: https://github.com/BJCaasenbrood/SorotokiModel/zipball/master
+Downloading 'https://github.com/BJCaasenbrood/SorotokiModel/zipball/master'.
+Adding package to metadata in '/home/brandon/MATLAB Add-Ons/Collections/mpm/mobeets-mpm-c626429/mpm-packages/mpm.mat'.
+Updating paths.
+Adding to path: './lib/sorotokimodel'
+Adding paths to all sub-folders via --all-paths.
+[39;49m[0m[39;49m[0m[1;30;49m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m[1;37;49m[0m
+[1;30;49m[0m

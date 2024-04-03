@@ -43,6 +43,12 @@ elseif numel(varargin{1}) == 1 && numel(varargin) == 2
     x1 = -a + p(1); x2 = a + p(1); 
     y1 = -a + p(2); y2 = a + p(2);
     z1 = -a + p(3); z2 = a + p(3);
+elseif numel(varargin{1}) == 3 && numel(varargin{2}) == 3
+    X = varargin{1}; 
+    Y = varargin{2}; 
+    x1 = X(1); x2 = Y(1);
+    y1 = X(2); y2 = Y(2);
+    z1 = X(3); z2 = Y(3);   
 elseif numel(varargin{1}) == 3
     X = varargin{1}; 
     x1 = 0; x2 = X(1);
