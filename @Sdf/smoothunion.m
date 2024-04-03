@@ -13,7 +13,15 @@ function r = smoothunion(obj1,obj2,varargin)
     elseif norm(B2) == Inf
         r.BdBox = B1;
     else
-        B = (1 + k/5)*[B1;B2];
+        B = [B1;B2];
         r.BdBox = boxhull(B);
     end
 end    
+
+function d = dSmoothUnion(d1,d2,k)
+    f1 = d1(:,end); %F1 = num2cell(f1); 
+    f2 = d2(:,end); %F2 = num2cell(f2);
+    h = max(k-abs(f1-f2), 0.0 );
+    d = min(f1, f2) - h.*h.*h/(6.0*k*k);
+    d = [d1, d2, d];
+end
