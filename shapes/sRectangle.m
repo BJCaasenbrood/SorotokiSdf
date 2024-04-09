@@ -70,9 +70,9 @@ elseif nargin == 4
    y2 = varargin{4};
 end
 
-eps = 1e-4 * norm([x1; x2; y1; y2]);
+% eps = 0 * norm([x1; x2; y1; y2]);
 sdf = Sdf(@(P) sdfRectangle(P,x1,x2,y1,y2));
-sdf.BdBox = [x1 - eps, x2 + eps, y1 - eps, y2 + eps];
+sdf.BdBox = [x1, x2, y1, y2];
 sdf.options.Center = sdf.centerofmass();
 end
 

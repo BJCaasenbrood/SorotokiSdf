@@ -14,21 +14,21 @@ function [h, V] = showContour(Sdf,varargin)
         [X,Y] = meshgrid(x,y);
 
         D = Sdf.eval([X(:),Y(:)]);
-        D = abs(D(:,end)).^(0.75).*sign(D(:,end));
+        D = abs(D(:,end)).*sign(D(:,end));
         
-        V = [X(:),Y(:)];
-        V = V(D<1e-6,:);
+        V = [X(:), Y(:)];
+        V = V(D<-1e-3,:);
         D(D>1e-6) = NaN;
         
         figure(101);
-        h = cplane(X,Y,reshape(D,[Q Q])-1e-6);
+        h = cplane(X,Y,reshape(D,[Q Q]));
         axis equal; hold on;
         I = frame2im(getframe(gca));
         
-        hh = contour3(X,Y,reshape(D,[Q Q]),...
-            [-2e6 -1e-6],'k');
+        % h = contour3(X,Y,reshape(D,[Q Q]),...
+        %     [-2e6 -1e-6],'k');
         
-        axis(Sdf.BdBox*1.01);
+        axis(Sdf.BdBox);
 
         colormap([Sdf.options.Color; Sdf.options.Color]);
         view(0,90);
