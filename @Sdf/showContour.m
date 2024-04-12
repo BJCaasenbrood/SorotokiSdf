@@ -6,8 +6,12 @@ function [h, V] = showContour(Sdf,varargin)
     
     Q = Sdf.options.Quality;
 
-    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
-    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
+    if numel(Q) == 1
+        Q = [Q, Q];
+    end
+
+    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q(1));
+    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q(2));
     
     if numel(Sdf.BdBox) < 6
 
@@ -17,19 +21,15 @@ function [h, V] = showContour(Sdf,varargin)
         D = abs(D(:,end)).*sign(D(:,end));
         
         V = [X(:), Y(:)];
-        V = V(D<-1e-3,:);
-        D(D>1e-6) = NaN;
+        V = V(D<-0,:);
+        D(D>-0) = NaN;
         
         figure(101);
-        h = cplane(X,Y,reshape(D,[Q Q]));
+        h = cplane(X,Y,reshape(D,[Q(2), Q(1)]));
         axis equal; hold on;
         I = frame2im(getframe(gca));
         
-        % h = contour3(X,Y,reshape(D,[Q Q]),...
-        %     [-2e6 -1e-6],'k');
-        
         axis(Sdf.BdBox);
-
         colormap([Sdf.options.Color; Sdf.options.Color]);
         view(0,90);
         drawnow;       

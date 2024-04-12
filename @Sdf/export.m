@@ -23,8 +23,6 @@ function varargout = export(Sdf, filename, varargin)
             filename = [filename,'.png'];
         end
         
-        % Sdf = enlargeBdBox(Sdf, -0.01);
-
         I = makeSdfIso(Sdf);
         varargout{1} = I;
     end
@@ -40,18 +38,22 @@ end
 function I = makeSdfIso(Sdf)
 
     Q = Sdf.options.Quality;
-    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q);
-    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q);
-    
+
+    if numel(Q) < 2
+        Q = [Q, Q];
+    end
+
+    x = linspace(Sdf.BdBox(1),Sdf.BdBox(2),Q(1));
+    y = linspace(Sdf.BdBox(3),Sdf.BdBox(4),Q(2));
+
     [X,Y] = meshgrid(x,y);
 
     D = Sdf.eval([X(:),Y(:)]);
     D = abs(D(:,end)).*sign(D(:,end));
     
     V = [X(:), Y(:)];
-    V = V(D<-1e-3,:);
-
-    I1 = D>1e-6;
+    V = V(D<0,:);
+    I1 = D>0;
     I2 = ~I1;
 
     D(I1) = 255;
@@ -61,5 +63,5 @@ function I = makeSdfIso(Sdf)
     
     % figure(101);
     % h = cplane(X,Y,reshape(D,[Q Q])-1e-6);
-    I = reshape(D,[Q Q]);
+    I = reshape(D,[Q(1), Q(2)]);
 end
