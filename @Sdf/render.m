@@ -4,7 +4,7 @@ function Sdf = render(Sdf,varargin)
         view(30,30);
 
         %enlarge bdbox by 2%
-        Sdf = enlargeBdBox(Sdf, Sdf.options.StepTolerance)
+        Sdf = enlargeBdBox(Sdf, Sdf.options.StepTolerance);
         obj = Gmodel(Sdf,'Quality',...
             Sdf.options.Quality,varargin{:});
         obj.bake.render();
