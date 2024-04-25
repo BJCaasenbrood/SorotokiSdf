@@ -1,5 +1,5 @@
 function d = dIntersect(d1,d2) 
-% DINTERSECT Calculates the intersection of two matrices and appends the maximum value.
+% DINTERSECT Calculates the intersection of two matrices and appends the maximum value
 %
 %   d = dIntersect(d1, d2) calculates the intersection of two matrices, d1 and d2, and appends the maximum value
 %   of each row from d1 and d2. The output d is a matrix where each row corresponds to a row in d1 and d2, and 
